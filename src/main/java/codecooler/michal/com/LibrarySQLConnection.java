@@ -25,7 +25,7 @@ public class LibrarySQLConnection {
 
             props.load(bf);
         } catch (IOException ex) {
-            Logger.getLogger(LibrarySQLConnection.class.getName()).log(
+            Logger.getLogger(LibraryDAOImpl.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
 
