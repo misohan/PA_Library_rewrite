@@ -39,15 +39,15 @@ public class LibraryDAOImpl {
             System.out.println(e.getMessage());
         }
     }
-    public void removeBook(int author_id){
-        String sql = "DELETE from books WHERE \"author_id\" = ?";
+    public void removeBook(String title){
+        String sql = "DELETE from books WHERE \"title\" = ?";
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             // set the corresponding parameter
 
-            pst.setInt(1, author_id);
+            pst.setString(1, title);
 
             // update
             pst.executeUpdate();
