@@ -1,20 +1,37 @@
 package codecooler.michal.com;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.ResultSet;
 
 public class LibraryJDBCDAO implements LibraryDAO {
-    private LibrarySQLConnection dbConn = new LibrarySQLConnection();
+    private final LibrarySQLConnection dbConn = new LibrarySQLConnection();
     private ResultSet resultSet = null;
+
+    public void addBookToLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
+        String sql = "INSERT INTO books (\"ISBN\",\"author_id\", \"title\", \"publisher_id\", \"publication_year\", \"price\") " +
+                "VALUES (?,?,?,?,?,?)";
+        String sql1 = "INSERT INTO books VALUES (9780099547899,4,'The Tin Drum','5k4',2017,56);";
+        System.out.println(sql);
+
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setLong(1, ISBN);
+            pst.setInt(2, author_id);
+            pst.setString(3, title);
+            pst.setString(4,publisher_id);
+            pst.setInt(5,publication_year);
+            pst.setInt(6,price);
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public void updateBookInLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
         String sql = "UPDATE books "
@@ -24,8 +41,6 @@ public class LibraryJDBCDAO implements LibraryDAO {
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            // set the corresponding parameter
-
             pst.setLong(1, ISBN);
             pst.setInt(6, author_id);
             pst.setString(2, title);
@@ -33,8 +48,6 @@ public class LibraryJDBCDAO implements LibraryDAO {
             pst.setInt(4,publication_year);
             pst.setInt(5,price);
 
-
-            // update
             pst.executeUpdate();
 
         } catch (SQLException e) {
@@ -49,15 +62,11 @@ public class LibraryJDBCDAO implements LibraryDAO {
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            // set the corresponding parameter
-
             pst.setString(1, title);
             pst.setInt(2,publication_year);
             pst.setInt(3,price);
             pst.setInt(4,author_id);
 
-
-            // update
             pst.executeUpdate();
 
         } catch (SQLException e) {
@@ -70,18 +79,13 @@ public class LibraryJDBCDAO implements LibraryDAO {
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            // set the corresponding parameter
-
             pst.setLong(1, ISBN);
 
-            // update
             pst.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
-
     }
     public void findBookByAuthorSurname(String surname){
         String sql = "SELECT books.\"title\", authors.\"surname\" " +
@@ -161,14 +165,12 @@ public class LibraryJDBCDAO implements LibraryDAO {
             e.printStackTrace();
         }
     }
-
     public void priceOfAllBooks(){
         String sql = "SELECT SUM(price) " +
                 "FROM books;";
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
-
 
             resultSet = pst.executeQuery();
 
@@ -178,17 +180,12 @@ public class LibraryJDBCDAO implements LibraryDAO {
             }
             resultSet.close();
 
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    public void addNewBookToLibrary(Long longy){
-
-    }
-
 }
+
 
 
 
