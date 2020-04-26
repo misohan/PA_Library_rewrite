@@ -4,17 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class LibraryJDBCDAO implements LibraryDAO {
+    private List<Book> books = new ArrayList<>();
     private final LibrarySQLConnection dbConn = new LibrarySQLConnection();
     private ResultSet resultSet = null;
 
     public void addBookToLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
         String sql = "INSERT INTO books (\"ISBN\",\"author_id\", \"title\", \"publisher_id\", \"publication_year\", \"price\") " +
                 "VALUES (?,?,?,?,?,?)";
-        String sql1 = "INSERT INTO books VALUES (9780099547899,4,'The Tin Drum','5k4',2017,56);";
-        System.out.println(sql);
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
@@ -35,14 +36,14 @@ public class LibraryJDBCDAO implements LibraryDAO {
 
     public void updateBookInLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
         String sql = "UPDATE books "
-                + "SET \"ISBN\" = ?, \"title\" = ?, \"publisher_id\"= ?, \"publication_year\"= ?, \"price\" = ?"
-                + "WHERE author_id = ?";
+                + "SET \"author_id\" = ?, \"title\" = ?, \"publisher_id\"= ?, \"publication_year\"= ?, \"price\" = ?"
+                + "WHERE \"ISBN\" = ?";
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setLong(1, ISBN);
-            pst.setInt(6, author_id);
+            pst.setLong(6, ISBN);
+            pst.setInt(1, author_id);
             pst.setString(2, title);
             pst.setString(3,publisher_id);
             pst.setInt(4,publication_year);
@@ -54,25 +55,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void editBookData(String title, int publication_year, int price, int author_id){
-        String sql = "UPDATE books "
-                +"SET \"title\" = ?, \"publication_year\" = ?, \"price\" = ?"
-                + "WHERE author_id = ?";
-        System.out.println(sql);
-        try (Connection con = dbConn.connect();
-             PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setString(1, title);
-            pst.setInt(2,publication_year);
-            pst.setInt(3,price);
-            pst.setInt(4,author_id);
-
-            pst.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
     public void removeBook(long ISBN){
         String sql = "DELETE from books WHERE \"ISBN\" = ?";
 
@@ -106,22 +89,33 @@ public class LibraryJDBCDAO implements LibraryDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void showAllBooksByTitleAsc(){
+    public List<Book> showAllBooksByTitleAsc(){
+        List<Book> books = new ArrayList<>();
 
         String sql = "SELECT * FROM books ORDER BY \"title\" ASC";
 
         try (Connection con = dbConn.connect();
-
-                 PreparedStatement pst = con.prepareStatement(sql)) {
+             PreparedStatement pst = con.prepareStatement(sql)) {
 
             resultSet = pst.executeQuery();
 
             while (resultSet.next()) {
-                System.out.println("Title: " + resultSet.getString("title"));
+                Book book = new Book();
+
+                book.setISBN(resultSet.getLong("ISBN"));
+                book.setAuthor_id(resultSet.getInt("author_id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setPublisher_id(resultSet.getString("publisher_id"));
+                book.setPublication_year(resultSet.getInt("publication_year"));
+                book.setPrice(resultSet.getInt("price"));
+
+                books.add(book);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return books;
     }
     public void numberOfBooksByAuthor(String surname){
         String sql = "SELECT COUNT(*)" +
@@ -165,10 +159,11 @@ public class LibraryJDBCDAO implements LibraryDAO {
             e.printStackTrace();
         }
     }
-    public void priceOfAllBooks(){
+    public int priceOfAllBooks() {
         String sql = "SELECT SUM(price) " +
                 "FROM books;";
 
+        int price = 0;
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -176,13 +171,15 @@ public class LibraryJDBCDAO implements LibraryDAO {
 
             if (resultSet.next()) {
 
-                System.out.println("Value of Library: " + resultSet.getInt(1));
+                price = resultSet.getInt(1);
             }
             resultSet.close();
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return price;
     }
 }
 
