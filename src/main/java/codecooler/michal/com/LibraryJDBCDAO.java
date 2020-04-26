@@ -70,8 +70,9 @@ public class LibraryJDBCDAO implements LibraryDAO {
             System.out.println(e.getMessage());
         }
     }
-    public Book findBookByAuthorSurname(String surname){
-        String sql = "SELECT books.\"title\", authors.\"surname\" " +
+    public Book getBookByAuthorSurname(String surname){
+        String sql = "SELECT books.\"ISBN\", books.\"author_id\", books.\"title\", books.\"publisher_id\", " +
+                "books.\"publication_year\", books.\"price\", authors.\"surname\" " +
                 "FROM authors " +
                 "INNER JOIN books ON books.\"author_id\"=authors.\"id\"" +
                 " WHERE \"surname\" = '" + surname + "';";
@@ -108,6 +109,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
             resultSet = pst.executeQuery();
 
             while (resultSet.next()) {
+
                 Book book = new Book();
 
                 book.setISBN(resultSet.getLong("ISBN"));
@@ -167,7 +169,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
             e.printStackTrace();
         }
     }
-    public int priceOfAllBooks() {
+    public int getPriceOfAllBooks() {
         String sql = "SELECT SUM(price) " +
                 "FROM books;";
 
