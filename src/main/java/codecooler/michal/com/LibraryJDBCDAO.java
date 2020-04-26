@@ -13,7 +13,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
     private final LibrarySQLConnection dbConn = new LibrarySQLConnection();
     private ResultSet resultSet = null;
 
-    public void addBookToLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
+    public void addBook(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
         String sql = "INSERT INTO books (\"ISBN\",\"author_id\", \"title\", \"publisher_id\", \"publication_year\", \"price\") " +
                 "VALUES (?,?,?,?,?,?)";
 
@@ -34,7 +34,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
         }
     }
 
-    public void updateBookInLibrary(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
+    public void updateBook(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price){
         String sql = "UPDATE books "
                 + "SET \"author_id\" = ?, \"title\" = ?, \"publisher_id\"= ?, \"publication_year\"= ?, \"price\" = ?"
                 + "WHERE \"ISBN\" = ?";
@@ -70,26 +70,34 @@ public class LibraryJDBCDAO implements LibraryDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void findBookByAuthorSurname(String surname){
+    public Book findBookByAuthorSurname(String surname){
         String sql = "SELECT books.\"title\", authors.\"surname\" " +
                 "FROM authors " +
                 "INNER JOIN books ON books.\"author_id\"=authors.\"id\"" +
                 " WHERE \"surname\" = '" + surname + "';";
+
+        Book book = new Book();
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             resultSet = pst.executeQuery();
 
-            System.out.println("Titles by " + surname);
             while (resultSet.next()) {
-                System.out.println("Title: " + resultSet.getString("title"));
+
+                book.setISBN(resultSet.getLong("ISBN"));
+                book.setAuthor_id(resultSet.getInt("author_id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setPublisher_id(resultSet.getString("publisher_id"));
+                book.setPublication_year(resultSet.getInt("publication_year"));
+                book.setPrice(resultSet.getInt("price"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return book;
     }
-    public List<Book> showAllBooksByTitleAsc(){
+    public List<Book> getAllBooksByTitleAsc(){
         List<Book> books = new ArrayList<>();
 
         String sql = "SELECT * FROM books ORDER BY \"title\" ASC";
@@ -117,7 +125,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
         }
         return books;
     }
-    public void numberOfBooksByAuthor(String surname){
+    public void getNumberOfBooksByAuthor(String surname){
         String sql = "SELECT COUNT(*)" +
                 "FROM authors " +
                 "INNER JOIN books ON books.\"author_id\"=authors.\"id\"" +
@@ -135,7 +143,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
             System.out.println(e.getMessage());
         }
     }
-    public void showBooksForLastTenYears(){
+    public void getBooksForLastTenYears(){
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
         int lastTenYears= 10;
