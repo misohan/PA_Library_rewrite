@@ -5,7 +5,9 @@ import java.util.Scanner;
 public class LibraryController {
     Scanner scanner = new Scanner(System.in);
 
-    public void libraryOptions(LibraryJDBCDAO libraryDAOimpl){
+    public void libraryOptions(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+        LibraryView libraryView = new LibraryView();
 
         System.out.println("Welcome to the personal library!");
 
@@ -23,30 +25,38 @@ public class LibraryController {
                     break;
 
                 case 1:
-                    
+                    addBook();
                     break;
 
                 case 2:
-                    System.out.println("Coming soon also");
+                    updateBook();
                     break;
 
                 case 3:
-                    System.out.println("Choose what book you want to remove by title");
-                    String userInputTitle = scanner.nextLine();
-//                    libraryDAOimpl.removeBook(userInputTitle);
+                    removeBook();
                     break;
 
                 case 4:
-                    System.out.println("Select author");
-                    String userInput = scanner.nextLine();
-//                    libraryDAOimpl.findBookByAuthorSurname(userInput);
+                    getBookByAuthorSurname();
                     break;
 
                 case 5:
-//                    libraryDAOimpl.showAllBooksByTitleAsc();
+                    libraryView.viewBooks(libraryDAO.getAllBooksByTitleAsc());
                     break;
 
                 case 6:
+                    getNumberOfBooksByAuthor();
+                    break;
+                case 7:
+                    libraryView.viewBooks(libraryDAO.getBooksForLastTenYears());
+                    break;
+                case 8:
+                    System.out.println("Value of library is: "+ libraryDAO.getPriceOfAllBooks());
+                    break;
+                case 9:
+                    System.out.println("In update.");
+                    break;
+                case 10:
                     printCustomersOptions();
                     break;
             }
@@ -61,9 +71,13 @@ public class LibraryController {
                 "1  - To add book.\n" +
                 "2  - To edit book.\n" +
                 "3  - To remove.\n" +
-                "4  - To find book by author surname.\n" +
+                "4  - To find books by author surname.\n" +
                 "5  - To show all books by title ascending.\n" +
-                "6  - To print a list of available actions.");
+                "6  - To show number of books by author.\n" +
+                "7  - To display all books for last 10 years.\n"+
+                "8  - To show value of library.\n" +
+                "9  - To show full name of author and his age.\n" +
+                "10  - To print a list of available actions.\n");
         System.out.println("Choose your action: ");
     }
     public void addBook(){
@@ -114,5 +128,29 @@ public class LibraryController {
 
         libraryDAO.updateBook(ISBN, author_id, title, publisher_id, publication_year, price);
 
+    }
+    public void removeBook(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+
+        System.out.println("Choose what book you want to remove by ISBN");
+        long userInputISBN = scanner.nextLong();
+        libraryDAO.removeBook(userInputISBN);
+        System.out.println("Book removed.");
+    }
+    public void getBookByAuthorSurname(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+
+        System.out.println("What is author surname?");
+        String userInputAuthor = scanner.nextLine();
+        libraryDAO.getBookByAuthorSurname(userInputAuthor);
+
+    }
+    public void getNumberOfBooksByAuthor(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+
+        System.out.println("What is author surname?");
+        String userInputAuthor = scanner.nextLine();
+        int numberOfBooks = libraryDAO.getNumberOfBooksByAuthor(userInputAuthor);
+        System.out.println("Number of books by " + userInputAuthor +" is " + numberOfBooks);
     }
 }
