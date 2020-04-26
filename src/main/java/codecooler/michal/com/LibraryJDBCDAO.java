@@ -127,12 +127,13 @@ public class LibraryJDBCDAO implements LibraryDAO {
         }
         return books;
     }
-    public void getNumberOfBooksByAuthor(String surname){
+    public int getNumberOfBooksByAuthor(String surname){
         String sql = "SELECT COUNT(*)" +
                 "FROM authors " +
                 "INNER JOIN books ON books.\"author_id\"=authors.\"id\"" +
                 " WHERE \"surname\" = '" + surname + "';";
 
+        int numberOfBooks = 0;
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -144,13 +145,15 @@ public class LibraryJDBCDAO implements LibraryDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return numberOfBooks;
     }
-    public void getBooksForLastTenYears(){
+    public List<Book> getBooksForLastTenYears(){
+        List<Book> books = new ArrayList<>();
+
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
         int lastTenYears= 10;
 
-        System.out.println(currentYear);
 
         String sql = "SELECT * FROM books " +
                 "WHERE publication_year " +
@@ -163,17 +166,27 @@ public class LibraryJDBCDAO implements LibraryDAO {
             resultSet = pst.executeQuery();
 
             while (resultSet.next()) {
-                System.out.println("Title: " + resultSet.getString("title"));
+                Book book = new Book();
+
+                book.setISBN(resultSet.getLong("ISBN"));
+                book.setAuthor_id(resultSet.getInt("author_id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setPublisher_id(resultSet.getString("publisher_id"));
+                book.setPublication_year(resultSet.getInt("publication_year"));
+                book.setPrice(resultSet.getInt("price"));
+
+                books.add(book);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return books;
     }
     public int getPriceOfAllBooks() {
         String sql = "SELECT SUM(price) " +
                 "FROM books;";
 
-        int price = 0;
+        int priceOfBooks = 0;
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -181,7 +194,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
 
             if (resultSet.next()) {
 
-                price = resultSet.getInt(1);
+                priceOfBooks = resultSet.getInt(1);
             }
             resultSet.close();
 
@@ -189,7 +202,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return price;
+        return priceOfBooks;
     }
 }
 
