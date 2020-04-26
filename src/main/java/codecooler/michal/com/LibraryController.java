@@ -13,7 +13,7 @@ public class LibraryController {
 
         boolean quit = false;
         while(!quit) {
-            System.out.println("\nEnter action: (6 to show available actions)");
+            System.out.println("\nEnter action: (10 to show available actions)");
             int action = scanner.nextInt();
             scanner.nextLine();
 
@@ -25,6 +25,25 @@ public class LibraryController {
                     break;
 
                 case 1:
+                    System.out.println("Does your book have new author?(1, for yes, 0 for no)");
+                    int userInputAuthor = scanner.nextInt();
+                    scanner.nextLine();
+
+                    int userInputAuthorCheck = 1;
+
+                    if(userInputAuthor==userInputAuthorCheck)
+                        addAuthor();
+
+                    System.out.println(("Does your book have new publisher?(1, for yes, 0 for no)"));
+
+                    int userInputPublisher = scanner.nextInt();
+                    scanner.nextLine();
+
+                    int userInputPublisherCheck = 1;
+
+                    if(userInputPublisherCheck == userInputPublisher){
+                        addPublisher();
+                    }
                     addBook();
                     break;
 
@@ -47,23 +66,25 @@ public class LibraryController {
                 case 6:
                     getNumberOfBooksByAuthor();
                     break;
+
                 case 7:
                     libraryView.viewBooks(libraryDAO.getBooksForLastTenYears());
                     break;
+
                 case 8:
                     System.out.println("Value of library is: "+ libraryDAO.getPriceOfAllBooks());
                     break;
+
                 case 9:
                     System.out.println("In update.");
                     break;
+
                 case 10:
                     printCustomersOptions();
                     break;
             }
-
         }
         scanner.close();
-
     }
     public void printCustomersOptions(){
         System.out.println("\nAvailable actions:\npress");
@@ -139,10 +160,13 @@ public class LibraryController {
     }
     public void getBookByAuthorSurname(){
         LibraryDAO libraryDAO = new LibraryJDBCDAO();
+        LibraryView libraryView = new LibraryView();
 
         System.out.println("What is author surname?");
         String userInputAuthor = scanner.nextLine();
-        libraryDAO.getBookByAuthorSurname(userInputAuthor);
+        Book book = libraryDAO.getBookByAuthorSurname(userInputAuthor);
+
+        libraryView.viewBook(book);
 
     }
     public void getNumberOfBooksByAuthor(){
@@ -152,5 +176,27 @@ public class LibraryController {
         String userInputAuthor = scanner.nextLine();
         int numberOfBooks = libraryDAO.getNumberOfBooksByAuthor(userInputAuthor);
         System.out.println("Number of books by " + userInputAuthor +" is " + numberOfBooks);
+    }
+    public void addAuthor(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+
+        System.out.println("What is author first name?");
+        String userInputName = scanner.nextLine();
+
+        System.out.println("What is author surname name?");
+        String userInputSurname = scanner.nextLine();
+
+        libraryDAO.addAuthor(userInputName, userInputSurname);
+    }
+    public void addPublisher(){
+        LibraryDAO libraryDAO = new LibraryJDBCDAO();
+
+        System.out.println("What is publisher id?");
+        String userInputID = scanner.nextLine();
+
+        System.out.println("What is publisher name?");
+        String userInputName = scanner.nextLine();
+
+        libraryDAO.addPublisher(userInputID, userInputName);
     }
 }
