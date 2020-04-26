@@ -8,8 +8,11 @@ public interface LibraryDAO {
     void removeBook(long author_id);
     Book getBookByAuthorSurname(String surname);
     List<Book> getAllBooksByTitleAsc();
-    void getNumberOfBooksByAuthor(String surname);
-    void getBooksForLastTenYears();
+    int getNumberOfBooksByAuthor(String surname);
+    List<Book> getBooksForLastTenYears();
     int getPriceOfAllBooks();
+    void addAuthor(String first_name, String surname);
+    void addPublisher(String ID, String name);
+
 
 }
