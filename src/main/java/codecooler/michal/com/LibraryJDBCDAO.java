@@ -204,7 +204,40 @@ public class LibraryJDBCDAO implements LibraryDAO {
         }
         return priceOfBooks;
     }
-}
+    public void addAuthor(String first_name, String surname){
+        String sql = "INSERT INTO authors (\"first_name\", \"surname\") " +
+                "VALUES (?,?)";
+
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, first_name);
+            pst.setString(2, surname);
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void addPublisher(String ID, String name){
+        String sql = "INSERT INTO publishers (ID, \"name\") " +
+                "VALUES (?,?)";
+
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, ID);
+            pst.setString(2, name);
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+ }
 
 
 
