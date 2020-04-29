@@ -122,10 +122,12 @@ public class LibraryJDBCDAO implements LibraryDAO {
                 books.add(book);
 
             }
+            return books;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return books;
+        return null;
     }
     public int getNumberOfBooksByAuthor(String surname){
         String sql = "SELECT COUNT(*)" +
@@ -142,6 +144,7 @@ public class LibraryJDBCDAO implements LibraryDAO {
             while (resultSet.next()) {
                 System.out.println("You have " + resultSet.getInt(1) + " books by this author.");
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -160,7 +163,6 @@ public class LibraryJDBCDAO implements LibraryDAO {
                 "BETWEEN " + (currentYear - lastTenYears) +" AND " + currentYear;
 
         try (Connection con = dbConn.connect();
-
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             resultSet = pst.executeQuery();
@@ -177,10 +179,11 @@ public class LibraryJDBCDAO implements LibraryDAO {
 
                 books.add(book);
             }
+            return books;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return books;
     }
     public int getPriceOfAllBooks() {
         String sql = "SELECT SUM(price) " +
@@ -198,11 +201,13 @@ public class LibraryJDBCDAO implements LibraryDAO {
             }
             resultSet.close();
 
+            return priceOfBooks;
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return 0;
         }
-        return priceOfBooks;
     }
     public void addAuthor(String first_name, String surname){
         String sql = "INSERT INTO authors (\"first_name\", \"surname\") " +
