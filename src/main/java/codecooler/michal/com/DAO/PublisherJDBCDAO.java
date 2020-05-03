@@ -31,7 +31,20 @@ public class PublisherJDBCDAO implements PublisherDAO{
 
     @Override
     public void updatePublisher(Publisher publisher) {
+        String sql = "UPDATE publishers "
+                + "SET \"name\"= ?"
+                + "WHERE ID = ?";
 
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, publisher.getName());
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
