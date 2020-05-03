@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorJDBCDAO implements AuthorDAO {
+    private List<Author> authors = new ArrayList<>();
     private final LibrarySQLConnection dbConn = new LibrarySQLConnection();
     private LibrarySQLConnection connection;
 
@@ -33,7 +34,6 @@ public class AuthorJDBCDAO implements AuthorDAO {
         }
     }
 
-
     @Override
     public void updateAuthor(Author author) {
         String sql = "UPDATE authors "
@@ -55,6 +55,31 @@ public class AuthorJDBCDAO implements AuthorDAO {
 
     @Override
     public List<Author> getAuthors() {
+        ResultSet resultSet = null;
+        List<Author> authors = new ArrayList<>();
+
+        String sql = "SELECT * FROM authors";
+
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            resultSet = pst.executeQuery();
+
+            while (resultSet.next()) {
+
+                Author author = new Author();
+
+                author.setId(resultSet.getInt("ID"));
+                author.setFirstName(resultSet.getString("first_name"));
+                author.setSecondName(resultSet.getString("surname"));
+
+                authors.add(author);
+            }
+            return authors;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
