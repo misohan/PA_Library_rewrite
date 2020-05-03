@@ -17,14 +17,14 @@ public class AuthorJDBCDAO implements AuthorDAO {
 
     @Override
     public void createAuthor(Author author) {
-        String sql = "INSERT INTO authors (\"id\",\"first_name\", \"surname\") " +
+        String sql = "INSERT INTO authors (\"first_name\", \"surname\") " +
                 "VALUES (?,?,?)";
 
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setInt(1, author.getId());
+
+            pst.setString(1, author.getFirstName());
             pst.setString(2, author.getFirstName());
-            pst.setString(3, author.getFirstName());
 
             pst.executeUpdate();
 
@@ -36,7 +36,21 @@ public class AuthorJDBCDAO implements AuthorDAO {
 
     @Override
     public void updateAuthor(Author author) {
+        String sql = "UPDATE authors "
+                + "SET \"first_name\"= ?, \"surname\"= ?"
+                + "WHERE ID = ?";
 
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, author.getFirstName());
+            pst.setString(2, author.getSecondName());
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
