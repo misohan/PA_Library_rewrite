@@ -1,5 +1,7 @@
 package codecooler.michal.com;
 
+import codecooler.michal.com.model.Book;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
