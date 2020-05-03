@@ -17,8 +17,22 @@ public class AuthorJDBCDAO implements AuthorDAO {
 
     @Override
     public void createAuthor(Author author) {
+        String sql = "INSERT INTO authors (\"id\",\"first_name\", \"surname\") " +
+                "VALUES (?,?,?)";
 
+        try (Connection con = dbConn.connect();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, author.getId());
+            pst.setString(2, author.getFirstName());
+            pst.setString(3, author.getFirstName());
+
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 
     @Override
     public void updateAuthor(Author author) {
