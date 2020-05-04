@@ -1,7 +1,9 @@
 package codecooler.michal.com.model;
 
-public class Book {
-    private long ISBN;
+import java.util.ArrayList;
+
+public class Book extends ArrayList<Book> {
+    private long isbn;
     private int author_id;
     private String title;
     private String publisher_id;
@@ -11,8 +13,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(long ISBN, int author_id, String title, String publisher_id, int publication_year, int price) {
-        this.ISBN = ISBN;
+    public Book(long isbn, int author_id, String title, String publisher_id, int publication_year, int price) {
+        this.isbn = isbn;
         this.author_id = author_id;
         this.title = title;
         this.publisher_id = publisher_id;
@@ -20,12 +22,12 @@ public class Book {
         this.price = price;
     }
 
-    public long getISBN() {
-        return ISBN;
+    public long getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(long ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(long isbn) {
+        this.isbn = isbn;
     }
 
     public int getAuthor_id() {
