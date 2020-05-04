@@ -12,4 +12,14 @@ public interface BookDAO {
     List<Book> getBooks();
 
     void deleteBook(long ISBN);
+
+    Book getBookByAuthorSurname(String surname);
+
+    List<Book> getAllBooksByTitleAsc();
+
+    int getNumberOfBooksByAuthor(String surname);
+
+    List<Book> getBooksForLastTenYears();
+
+    int getPriceOfAllBooks();
 }

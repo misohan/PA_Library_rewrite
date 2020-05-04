@@ -29,7 +29,7 @@ public class BookJDBCDAO implements BookDAO {
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setLong(1, book.getISBN());
+            pst.setLong(1, book.getIsbn());
             pst.setInt(2, book.getAuthor_id());
             pst.setString(3, book.getTitle());
             pst.setString(4, book.getPublisher_id());
@@ -52,7 +52,7 @@ public class BookJDBCDAO implements BookDAO {
         try (Connection con = dbConn.connect();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setLong(6, book.getISBN());
+            pst.setLong(6, book.getIsbn());
             pst.setInt(1, book.getAuthor_id());
             pst.setString(2, book.getTitle());
             pst.setString(3, book.getPublisher_id());
@@ -82,7 +82,7 @@ public class BookJDBCDAO implements BookDAO {
 
                 Book book = new Book();
 
-                book.setISBN(resultSet.getLong("ISBN"));
+                book.setIsbn(resultSet.getLong("ISBN"));
                 book.setAuthor_id(resultSet.getInt("author_id"));
                 book.setTitle(resultSet.getString("title"));
                 book.setPublisher_id(resultSet.getString("publisher_id"));
@@ -132,7 +132,7 @@ public class BookJDBCDAO implements BookDAO {
 
             while (resultSet.next()) {
 
-                book.setISBN(resultSet.getLong("ISBN"));
+                book.setIsbn(resultSet.getLong("ISBN"));
                 book.setAuthor_id(resultSet.getInt("author_id"));
                 book.setTitle(resultSet.getString("title"));
                 book.setPublisher_id(resultSet.getString("publisher_id"));
@@ -160,7 +160,7 @@ public class BookJDBCDAO implements BookDAO {
 
                 Book book = new Book();
 
-                book.setISBN(resultSet.getLong("ISBN"));
+                book.setIsbn(resultSet.getLong("ISBN"));
                 book.setAuthor_id(resultSet.getInt("author_id"));
                 book.setTitle(resultSet.getString("title"));
                 book.setPublisher_id(resultSet.getString("publisher_id"));
@@ -222,7 +222,7 @@ public class BookJDBCDAO implements BookDAO {
             while (resultSet.next()) {
                 Book book = new Book();
 
-                book.setISBN(resultSet.getLong("ISBN"));
+                book.setIsbn(resultSet.getLong("ISBN"));
                 book.setAuthor_id(resultSet.getInt("author_id"));
                 book.setTitle(resultSet.getString("title"));
                 book.setPublisher_id(resultSet.getString("publisher_id"));
@@ -237,7 +237,7 @@ public class BookJDBCDAO implements BookDAO {
             return null;
         }
     }
-    public int getPriceOfAllBooks() {
+    public int getPriceOfAllBooks(){
         ResultSet resultSet = null;
 
         String sql = "SELECT SUM(price) " +
@@ -263,5 +263,4 @@ public class BookJDBCDAO implements BookDAO {
             return 0;
         }
     }
-
 }

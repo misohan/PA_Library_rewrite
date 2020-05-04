@@ -1,7 +1,6 @@
 package codecooler.michal.com.DAO;
 import codecooler.michal.com.LibrarySQLConnection;
 import codecooler.michal.com.model.Author;
-import codecooler.michal.com.model.Book;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
