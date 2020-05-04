@@ -1,5 +1,7 @@
 package codecooler.michal.com;
 
+import codecooler.michal.com.model.Book;
+
 import java.util.List;
 
 public interface LibraryDAO {

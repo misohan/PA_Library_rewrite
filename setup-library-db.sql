@@ -61,3 +61,6 @@ INSERT INTO books VALUES
     (9781853260117,8,'Tom Sawyer & Huckleberry Finn','2g8',2001,13),
     (9788375617634,3,'Pride and Prejudice','112',2017,29.9),
     (9788380976535,3,'Lady Susan','83f',2016,24.9);
+
+INSERT INTO books VALUES (5780099540677,4,'The Tin Drum','5k4',2017,56);
+

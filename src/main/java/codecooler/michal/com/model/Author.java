@@ -5,6 +5,9 @@ public class Author {
     String firstName;
     String secondName;
 
+    public Author() {
+    }
+
     public Author(int id, String firstName, String secondName) {
         this.id = id;
         this.firstName = firstName;
