@@ -1,4 +1,4 @@
-package codecooler.michal.com.DAO;
+package codecooler.michal.com.dao;
 import codecooler.michal.com.LibrarySQLConnection;
 import codecooler.michal.com.model.Book;
 
@@ -143,39 +143,6 @@ public class BookJDBCDAO implements BookDAO {
             System.out.println(e.getMessage());
         }
         return book;
-    }
-    public List<Book> getAllBooksByTitleAsc(){
-        ResultSet resultSet = null;
-
-        List<Book> books = new ArrayList<>();
-
-        String sql = "SELECT * FROM books ORDER BY \"title\" ASC";
-
-        try (Connection con = dbConn.connect();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            resultSet = pst.executeQuery();
-
-            while (resultSet.next()) {
-
-                Book book = new Book();
-
-                book.setIsbn(resultSet.getLong("ISBN"));
-                book.setAuthor_id(resultSet.getInt("author_id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublisher_id(resultSet.getString("publisher_id"));
-                book.setPublication_year(resultSet.getInt("publication_year"));
-                book.setPrice(resultSet.getInt("price"));
-
-                books.add(book);
-
-            }
-            return books;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
     public int getNumberOfBooksByAuthor(String surname){
         ResultSet resultSet = null;
