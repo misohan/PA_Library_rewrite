@@ -168,41 +168,5 @@ public class BookJDBCDAO implements BookDAO {
         }
         return numberOfBooks;
     }
-    public List<Book> getBooksForLastTenYears(){
-        ResultSet resultSet = null;
 
-        List<Book> books = new ArrayList<>();
-
-        Calendar calendar = Calendar.getInstance();
-        int currentYear = calendar.get(Calendar.YEAR);
-        int lastTenYears= 10;
-
-
-        String sql = "SELECT * FROM books " +
-                "WHERE publication_year " +
-                "BETWEEN " + (currentYear - lastTenYears) +" AND " + currentYear;
-
-        try (Connection con = dbConn.connect();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            resultSet = pst.executeQuery();
-
-            while (resultSet.next()) {
-                Book book = new Book();
-
-                book.setIsbn(resultSet.getLong("ISBN"));
-                book.setAuthor_id(resultSet.getInt("author_id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setPublisher_id(resultSet.getString("publisher_id"));
-                book.setPublication_year(resultSet.getInt("publication_year"));
-                book.setPrice(resultSet.getInt("price"));
-
-                books.add(book);
-            }
-            return books;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
