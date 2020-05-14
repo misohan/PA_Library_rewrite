@@ -2,7 +2,7 @@ package codecooler.michal.com.model;
 
 import java.util.ArrayList;
 
-public class Book extends ArrayList<Book> {
+public class Book extends ArrayList<Book> implements Comparable<Book> {
     private long isbn;
     private int author_id;
     private String title;
@@ -69,4 +69,13 @@ public class Book extends ArrayList<Book> {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    @Override
+    public int compareTo(Book book) {
+        if (getTitle() == null || book.getTitle() == null) {
+            return 0;
+        }
+        return getTitle().compareTo(book.getTitle());
+    }
 }
+
