@@ -1,7 +1,7 @@
 package codecooler.michal.com;
 
-import codecooler.michal.com.DAO.BookDAO;
-import codecooler.michal.com.DAO.BookJDBCDAO;
+import codecooler.michal.com.dao.BookDAO;
+import codecooler.michal.com.dao.BookJDBCDAO;
 
 public class Library {
     public static void main(String[] args) {

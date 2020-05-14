@@ -1,5 +1,7 @@
 package codecooler.michal.com;
 
+import codecooler.michal.com.dao.BookDAO;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +27,7 @@ public class LibrarySQLConnection {
 
             props.load(bf);
         } catch (IOException ex) {
-            Logger.getLogger(LibraryDAOImpl.class.getName()).log(
+            Logger.getLogger(BookDAO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
 

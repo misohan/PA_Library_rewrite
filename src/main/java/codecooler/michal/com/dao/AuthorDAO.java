@@ -1,4 +1,4 @@
-package codecooler.michal.com.DAO;
+package codecooler.michal.com.dao;
 
 import codecooler.michal.com.model.Author;
 

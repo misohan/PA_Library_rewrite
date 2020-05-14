@@ -1,6 +1,5 @@
-package codecooler.michal.com.DAO;
+package codecooler.michal.com.dao;
 
-import codecooler.michal.com.model.Book;
 import codecooler.michal.com.model.Publisher;
 
 import java.util.List;
