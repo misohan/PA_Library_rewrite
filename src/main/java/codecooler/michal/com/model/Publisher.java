@@ -1,8 +1,8 @@
 package codecooler.michal.com.model;
 
 public class Publisher {
-    String id;
-    String name;
+    private String id;
+    private String name;
 
     public Publisher(String id, String name) {
         this.id = id;

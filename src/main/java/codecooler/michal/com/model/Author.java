@@ -2,8 +2,8 @@ package codecooler.michal.com.model;
 
 public class Author {
     int id;
-    String firstName;
-    String secondName;
+    private String firstName;
+    private String secondName;
 
     public Author() {
     }
