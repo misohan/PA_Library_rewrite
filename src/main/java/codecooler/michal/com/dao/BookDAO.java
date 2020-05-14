@@ -18,6 +18,4 @@ public interface BookDAO {
     int getNumberOfBooksByAuthor(String surname);
 
     List<Book> getBooksForLastTenYears();
-
-    int getPriceOfAllBooks();
 }

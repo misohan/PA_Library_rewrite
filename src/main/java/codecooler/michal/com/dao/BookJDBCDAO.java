@@ -145,6 +145,7 @@ public class BookJDBCDAO implements BookDAO {
         return book;
     }
     public int getNumberOfBooksByAuthor(String surname){
+
         ResultSet resultSet = null;
 
         String sql = "SELECT COUNT(*)" +
@@ -202,32 +203,6 @@ public class BookJDBCDAO implements BookDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-    public int getPriceOfAllBooks(){
-        ResultSet resultSet = null;
-
-        String sql = "SELECT SUM(price) " +
-                "FROM books;";
-
-        int priceOfBooks = 0;
-        try (Connection con = dbConn.connect();
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
-            resultSet = pst.executeQuery();
-
-            if (resultSet.next()) {
-
-                priceOfBooks = resultSet.getInt(1);
-            }
-            resultSet.close();
-
-            return priceOfBooks;
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return 0;
         }
     }
 }
