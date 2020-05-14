@@ -30,7 +30,7 @@ public class LibraryController {
 
             switch (action) {
                 case 0:
-                    libraryView.quitApplication();
+                    libraryView.printEndingOfApplication();
                     quit = true;
                     break;
 
@@ -70,8 +70,7 @@ public class LibraryController {
                     break;
 
                 case 8:
-                    int valueOfLibrary = bookDAO.getPriceOfAllBooks();
-                    libraryView.viewValueOfLibrary(valueOfLibrary);
+                    libraryView.viewValueOfLibrary(getPriceOfAllBooks(books));
                     break;
 
                 case 9:
@@ -83,5 +82,13 @@ public class LibraryController {
                     break;
             }
         }
+    }
+    public int getPriceOfAllBooks(List<Book> books){
+        int libraryValue = 0;
+        for(Book book: books){
+            libraryValue += book.getPrice();
+
+        }
+        return libraryValue;
     }
 }
