@@ -1,4 +1,4 @@
-package codecooler.michal.com.DAO;
+package codecooler.michal.com.dao;
 
 import java.util.List;
 import codecooler.michal.com.model.Book;
@@ -14,8 +14,6 @@ public interface BookDAO {
     void deleteBook(long ISBN);
 
     Book getBookByAuthorSurname(String surname);
-
-    List<Book> getAllBooksByTitleAsc();
 
     int getNumberOfBooksByAuthor(String surname);
 
