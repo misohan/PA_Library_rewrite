@@ -4,6 +4,8 @@ import codecooler.michal.com.dao.*;
 import codecooler.michal.com.view.*;
 import codecooler.michal.com.model.Book;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,7 +68,7 @@ public class LibraryController {
                     break;
 
                 case 7:
-                    libraryView.viewBooks(bookDAO.getBooksForLastTenYears());
+                    libraryView.viewBooks(getBooksForLastTenYears(books));
                     break;
 
                 case 8:
@@ -91,4 +93,20 @@ public class LibraryController {
         }
         return libraryValue;
     }
+    public List<Book> getBooksForLastTenYears(List<Book> books){
+        List<Book> sortedBooks = new ArrayList<Book>();
+
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int lastTenYears= 10;
+        int yearThreshold= currentYear - lastTenYears;
+
+        for(Book book: books){
+            if(book.getPublication_year() >= yearThreshold){
+                sortedBooks.add(book);
+            }
+        }
+        return sortedBooks;
+    }
+
 }
