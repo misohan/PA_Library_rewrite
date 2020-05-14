@@ -1,8 +1,11 @@
 package codecooler.michal.com;
 
-import codecooler.michal.com.DAO.*;
+import codecooler.michal.com.dao.*;
 import codecooler.michal.com.view.*;
 import codecooler.michal.com.model.Book;
+
+import java.util.Collections;
+import java.util.List;
 
 public class LibraryController {
     private LibraryView libraryView;
@@ -16,6 +19,7 @@ public class LibraryController {
     public void libraryOptions(){
         BookDAO bookDAO = new BookJDBCDAO();
         LibraryView libraryView = new LibraryView();
+        List<Book> books = bookDAO.getBooks();
 
         System.out.println("Welcome to the personal library!");
 
@@ -51,7 +55,8 @@ public class LibraryController {
                     break;
 
                 case 5:
-                    libraryView.viewBooks(bookDAO.getAllBooksByTitleAsc());
+                    Collections.sort(books);
+                    libraryView.viewBooks(books);
                     break;
 
                 case 6:
@@ -70,7 +75,7 @@ public class LibraryController {
                     break;
 
                 case 9:
-                    System.out.println("In update.");
+                    libraryView.viewBooks(books);
                     break;
 
                 case 10:
@@ -79,4 +84,4 @@ public class LibraryController {
             }
         }
     }
- }
+}
